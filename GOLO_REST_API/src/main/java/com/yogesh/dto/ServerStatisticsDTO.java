@@ -5,23 +5,35 @@ package com.yogesh.dto;
  */
 public class ServerStatisticsDTO {
 	
-	 private String date;
-	    private String status;
+		private String startedSince;
+		private String time;
+	    private String state;
 
-	    public String getStatus() {
-	        return status;
+	    public String getState() {
+	        return state;
 	    }
 
-	    public void setStatus(String status) {
-	        this.status = status;
+	    public void setState(String status) {
+	        this.state = status;
 	    }
 
-	    public String getDate() {
-	        return date;
-	    }
+		public String getStartedSince() {
+			return startedSince;
+		}
 
-	    public void setDate(String date) {
-	        this.date = date;
-	    }
+		public void setStartedSince(String startedSince) {
+			this.startedSince = startedSince;
+		}
+
+		public String getTime() {
+			return time;
+		}
+
+		public void setTime(String time) {
+			this.time = time;
+		}
+
+
+	   
 
 }

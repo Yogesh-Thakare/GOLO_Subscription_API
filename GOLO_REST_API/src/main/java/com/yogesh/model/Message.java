@@ -1,17 +1,20 @@
 package com.yogesh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties
 public class Message {
 
-    private String message;
+    private String status;
 
-	public String getMessage() {
-		return message;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
+	
    
 }

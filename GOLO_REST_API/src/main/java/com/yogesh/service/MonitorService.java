@@ -9,6 +9,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.ws.rs.core.MediaType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -80,7 +82,11 @@ public class MonitorService {
                 	ConcurrentHashMap<String,String> map = database.getCACHE().get(hostname);
                     if(map!=null) 
                     {
-                        map.put(new Date().toString(), restTemplate.getForEntity(hostname, Message.class).getBody().getMessage());
+                    	Message response = ClientCreationUtil.createClient().target(hostname).request(MediaType.APPLICATION_JSON_TYPE).get(Message.class);
+                    	if (response.getStatus().equals("READY"))
+                        map.put(new Date().toString(), "Server Sent Ready");
+                    	else
+                    	map.put(new Date().toString(), "Server Sent ERROR");
                     } else 
                     {
                         timer.cancel();

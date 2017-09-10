@@ -1,3 +1,3 @@
-# Paysafe Coding Challenge
+# Coding Challenge
 
 

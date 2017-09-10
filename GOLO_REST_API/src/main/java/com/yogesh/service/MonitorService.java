@@ -5,7 +5,6 @@ import static java.text.MessageFormat.format;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,13 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.yogesh.model.ApiAccessibilityResource;
+import com.yogesh.model.Message;
 import com.yogesh.model.ThreadSafeDatabase;
 
 @Service
-public class MonitoringService {
+public class MonitorService {
 	
-	private static final Logger log = LoggerFactory.getLogger(MonitoringService.class);
+	private static final Logger log = LoggerFactory.getLogger(MonitorService.class);
 	
     public String startMonitoring(String hostname, Long interval) 
     {
@@ -58,7 +57,7 @@ public class MonitoringService {
     }
 
     
-    public static void monitorServer(String hostname, Long interval, ThreadSafeDatabase vitrualMonitoringDataStore) throws InterruptedException{
+    public static void monitorServer(String hostname, Long interval, ThreadSafeDatabase database) throws InterruptedException{
         RestTemplate restTemplate = new RestTemplate();
         Timer timer = new Timer();
         log.info("Probe running on server" + hostname+ "......");
@@ -69,9 +68,9 @@ public class MonitoringService {
         	 @Override
             public void run() {
                 if(isRunning) {
-                	ConcurrentHashMap<String,String> map = vitrualMonitoringDataStore.getCACHE().get(hostname);
+                	ConcurrentHashMap<String,String> map = database.getCACHE().get(hostname);
                     if(map!=null) {
-                        map.put(new Date().toString(), restTemplate.getForEntity(hostname, ApiAccessibilityResource.class).getBody().getMessage());
+                        map.put(new Date().toString(), restTemplate.getForEntity(hostname, Message.class).getBody().getMessage());
                     } else {
                         timer.cancel();
                         timer.purge();

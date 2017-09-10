@@ -1,7 +1,7 @@
 package com.yogesh.model;
 
 
-public class ApiAccessibilityResource {
+public class Message {
 
     private String message;
 

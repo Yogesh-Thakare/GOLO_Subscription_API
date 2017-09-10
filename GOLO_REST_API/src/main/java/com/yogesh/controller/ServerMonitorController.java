@@ -20,7 +20,7 @@ import com.yogesh.dto.ErrorResponse;
 import com.yogesh.dto.ErrorResponse.ErrorCode;
 import com.yogesh.dto.Response;
 import com.yogesh.dto.SuccessResponse;
-import com.yogesh.service.MonitoringService;
+import com.yogesh.service.MonitorService;
 
 /**
  * @author Yogesh Thakare
@@ -29,13 +29,13 @@ import com.yogesh.service.MonitoringService;
 @RequestMapping("/api/monitor")
 public class ServerMonitorController 
 {
-	private final MonitoringService monitoringService;
+	private final MonitorService monitoringService;
 	
 	private static final Logger log = LoggerFactory.getLogger(ServerMonitorController.class);
 
 
 	@Autowired
-	public ServerMonitorController(MonitoringService monitoringService) 
+	public ServerMonitorController(MonitorService monitoringService) 
 	{
 		this.monitoringService=monitoringService;
 	}

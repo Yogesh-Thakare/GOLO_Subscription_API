@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.yogesh.exception.MonitoringNotFoundException;
+import com.yogesh.exception.MonitoringNotStartedException;
 import com.yogesh.model.Message;
 import com.yogesh.model.ThreadSafeDatabase;
 
@@ -43,12 +43,12 @@ public class MonitorService {
     }
     
     
-    public String stopMonitoring(String hostname) throws MonitoringNotFoundException 
+    public String stopMonitoring(String hostname) throws MonitoringNotStartedException 
     {
     	ThreadSafeDatabase threadSafeDatabase = ThreadSafeDatabase.getHandle();
         
     	if(!threadSafeDatabase.getCACHE().containsKey(hostname))
-    		throw new MonitoringNotFoundException(format("Monitoring on server {0} not found", hostname));
+    		throw new MonitoringNotStartedException(format("Monitoring on server {0} not found", hostname));
 
     	Iterator<HashMap.Entry<String, ConcurrentHashMap<String,String>>> entries = threadSafeDatabase.getCACHE().entrySet().iterator();
     	while(entries.hasNext())

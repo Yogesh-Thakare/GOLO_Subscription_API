@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.yogesh.exception.MonitoringNotFoundException;
 import com.yogesh.model.Message;
 import com.yogesh.model.ThreadSafeDatabase;
 
@@ -26,60 +27,68 @@ public class MonitorService {
     {
         ThreadSafeDatabase threadSafeDatabase = ThreadSafeDatabase.getHandle();
         HashMap<String, ConcurrentHashMap<String,String>> data = new HashMap<>();
-            data.put(hostname,new ConcurrentHashMap<>());
-
-            threadSafeDatabase.setCACHE(data);
-            try {
-            	 monitorServer(hostname,interval, threadSafeDatabase);
-            } catch (InterruptedException ex) {
-            	 Thread.currentThread().interrupt();
-                log.error("Failed to monitor server", ex.getMessage());
-            }
+        data.put(hostname,new ConcurrentHashMap<>());
+        threadSafeDatabase.setCACHE(data);
+        try 
+        {
+        	monitorServer(hostname,interval, threadSafeDatabase);
+        }
+        catch (InterruptedException ex)
+        {
+        	Thread.currentThread().interrupt();
+            log.error("Failed to monitor server", ex.getMessage());
+        }
 
         return "monitoring started on "+hostname;
     }
     
     
-    public String stopMonitoring(String hostname) {
+    public String stopMonitoring(String hostname) throws MonitoringNotFoundException 
+    {
+    	ThreadSafeDatabase threadSafeDatabase = ThreadSafeDatabase.getHandle();
+        
+    	if(!threadSafeDatabase.getCACHE().containsKey(hostname))
+    		throw new MonitoringNotFoundException(format("Monitoring on server {0} not found", hostname));
 
-        ThreadSafeDatabase threadSafeDatabase = ThreadSafeDatabase.getHandle();
-
-        Iterator<HashMap.Entry<String, ConcurrentHashMap<String,String>>> entries = threadSafeDatabase.getCACHE().entrySet().iterator();
-        while(entries.hasNext())
-        {
-        	HashMap.Entry<String, ConcurrentHashMap<String,String>> entry = entries.next();
-            if (entry.getKey().equals(hostname)) {
-                entries.remove();
-            }
-        }
-        log.info(format("Server  with id {0} is no more monitored!", hostname));
+    	Iterator<HashMap.Entry<String, ConcurrentHashMap<String,String>>> entries = threadSafeDatabase.getCACHE().entrySet().iterator();
+    	while(entries.hasNext())
+    	{
+    		HashMap.Entry<String, ConcurrentHashMap<String,String>> entry = entries.next();
+    		if (entry.getKey().equals(hostname)) 
+    		{
+    			entries.remove();
+    		}
+    	}
+    	
         return "monitoring stopped on "+hostname;
     }
 
     
-    public static void monitorServer(String hostname, Long interval, ThreadSafeDatabase database) throws InterruptedException{
+    public static void monitorServer(String hostname, Long interval, ThreadSafeDatabase database) throws InterruptedException
+    {
         RestTemplate restTemplate = new RestTemplate();
         Timer timer = new Timer();
         log.info("Probe running on server" + hostname+ "......");
         boolean isRunning = true;
         TimerTask task = new TimerTask() 
         {
-        	
-        	 @Override
-            public void run() {
-                if(isRunning) {
+        	@Override
+            public void run() 
+        	{
+                if(isRunning) 
+                {
                 	ConcurrentHashMap<String,String> map = database.getCACHE().get(hostname);
-                    if(map!=null) {
+                    if(map!=null) 
+                    {
                         map.put(new Date().toString(), restTemplate.getForEntity(hostname, Message.class).getBody().getMessage());
-                    } else {
+                    } else 
+                    {
                         timer.cancel();
                         timer.purge();
                     }
-                }            }
+                }
+            }	
         };
-
         timer.scheduleAtFixedRate(task, interval, interval);
     }
-    
-
 }

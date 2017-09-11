@@ -14,12 +14,13 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
 import com.yogesh.exception.MonitoringNotStartedException;
 import com.yogesh.model.Message;
 import com.yogesh.model.ThreadSafeDatabase;
 
+/**
+ * @author Yogesh Thakare
+ */
 @Service
 public class MonitorService {
 	
@@ -68,7 +69,6 @@ public class MonitorService {
     
     public static void monitorServer(String hostname, Long interval, ThreadSafeDatabase database) throws InterruptedException
     {
-        RestTemplate restTemplate = new RestTemplate();
         Timer timer = new Timer();
         log.info("Probe running on server" + hostname+ "......");
         boolean isRunning = true;

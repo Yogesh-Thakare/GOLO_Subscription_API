@@ -18,7 +18,7 @@ import com.yogesh.dto.EmptyResponseDTO;
 import com.yogesh.dto.ErrorResponseDTO;
 import com.yogesh.dto.ErrorResponseDTO.ErrorCode;
 import com.yogesh.dto.ResponseDTO;
-import com.yogesh.dto.ServerStatisticsSet;
+import com.yogesh.dto.ServerStatisticsSetDTO;
 import com.yogesh.dto.SuccessResponseDTO;
 import com.yogesh.exception.InvalidCommadException;
 import com.yogesh.service.MonitorService;
@@ -73,13 +73,13 @@ public class ServerMonitorController
 	 }
 	 
 	 @RequestMapping(value="/overview",method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-	 public ResponseEntity<ServerStatisticsSet> getStatistics(  @RequestParam(value = "hostname", required=true) String hostname ) 
+	 public ResponseEntity<ServerStatisticsSetDTO> getStatistics(  @RequestParam(value = "hostname", required=true) String hostname ) 
 	 {
 		try
 		{
-			ServerStatisticsSet statistics = new ServerStatisticsSet();
+			ServerStatisticsSetDTO statistics = new ServerStatisticsSetDTO();
 			statistics.setOverview(statisticsService.getOverview(hostname));
-			return new ResponseEntity<ServerStatisticsSet>(statistics, HttpStatus.OK);
+			return new ResponseEntity<ServerStatisticsSetDTO>(statistics, HttpStatus.OK);
 		}
 		catch (Exception ex) 
 		{

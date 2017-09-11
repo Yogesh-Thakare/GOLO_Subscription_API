@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Yogesh Thakare
  */
-public class ServerStatisticsSet {
+public class ServerStatisticsSetDTO {
 	
 	private List<ServerStatisticsDTO> overview;
 

@@ -3,7 +3,7 @@ package com.yogesh.dto;
 /**
  * @author Yogesh Thakare
  */
-public class EmptyResponseDTO extends ServerStatisticsSet{
+public class EmptyResponseDTO extends ServerStatisticsSetDTO{
 	
 	public ErrorCode errorCode;
 	public String message;

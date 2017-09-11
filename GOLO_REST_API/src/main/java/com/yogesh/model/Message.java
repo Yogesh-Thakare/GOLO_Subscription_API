@@ -2,6 +2,9 @@ package com.yogesh.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * @author Yogesh Thakare
+ */
 @JsonIgnoreProperties
 public class Message {
 
@@ -14,7 +17,4 @@ public class Message {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	
-   
 }

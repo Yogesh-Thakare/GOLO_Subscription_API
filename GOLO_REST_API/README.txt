@@ -12,14 +12,14 @@ Application can be deployed and viewed on Local: (http://localhost:8090/)
  - Implemented following notification APIs:
  
  -> Monitoring Server
- - start: http://[host]:[port]/api/monitor/start?hostname=[server]&interval=[time]
+ - Start: http://[host]:[port]/api/monitor/start?hostname=[server]&interval=[time]
  - Example: http://localhost:8090/api/monitor/start?hostname=https://api.test.paysafe.com/accountmanagement/monitor&interval=500
      
- - stop: http://[host]:[port]/api/monitor/stop?hostname=[server]
+ - Stop: http://[host]:[port]/api/monitor/stop?hostname=[server]
  - Example:http://localhost:8090/api/monitor/stop?hostname=https://api.test.paysafe.com/accountmanagement/monitor
    
  -> Get Server Statistics
- - overview: http://[host]:[port]/api/monitor/overview?hostname=[server]
+ - Overview: http://[host]:[port]/api/monitor/overview?hostname=[server]
  - Example:http://localhost:8090/api/monitor/overview?hostname=https://api.test.paysafe.com/accountmanagement/monitor
   
 ## Technology stack

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.yogesh.exception.MonitoringNotStartedException;
+import com.yogesh.model.ClientDriver;
 import com.yogesh.model.Message;
 import com.yogesh.model.ThreadSafeDatabase;
 
@@ -82,7 +83,7 @@ public class MonitorService {
                 	ConcurrentHashMap<String,String> map = database.getCACHE().get(hostname);
                     if(map!=null) 
                     {
-                    	Message response = ClientCreationUtil.createClient().target(hostname).request(MediaType.APPLICATION_JSON_TYPE).get(Message.class);
+                    	Message response = ClientDriver.createClient().target(hostname).request(MediaType.APPLICATION_JSON_TYPE).get(Message.class);
                     	if (response.getStatus().equals("READY"))
                         map.put(new Date().toString(), "Server Sent Ready");
                     	else

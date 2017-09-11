@@ -1,4 +1,4 @@
-# Paysafe Coding Challenge - Yogesh Thakare
+			* Paysafe Coding Challenge - Yogesh Thakare *
 
 This is Spring Boot based application
 Application can be deployed and viewed on Local: (http://localhost:8090/)
@@ -35,3 +35,5 @@ Locally:
 -Run mvn clean 
 -Run mvn install
 -Run main class Application, so that application will be up and above REST calls are accessible.
+
+Note* please see attached GOLO API Documentation for response obtained in Postman client

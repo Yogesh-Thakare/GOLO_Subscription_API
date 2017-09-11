@@ -2,6 +2,8 @@ package com.yogesh.service;
 
 import static java.text.MessageFormat.format;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -73,6 +75,7 @@ public class MonitorService {
         Timer timer = new Timer();
         log.info("Probe running on server" + hostname+ "......");
         boolean isRunning = true;
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         TimerTask task = new TimerTask() 
         {
         	@Override
@@ -85,9 +88,9 @@ public class MonitorService {
                     {
                     	Message response = ClientDriver.createClient().target(hostname).request(MediaType.APPLICATION_JSON_TYPE).get(Message.class);
                     	if (response.getStatus().equals("READY"))
-                        map.put(new Date().toString(), "Server Sent Ready");
+                        map.put(formatter.format(new Date()), "Server Sent Ready");
                     	else
-                    	map.put(new Date().toString(), "Server Sent ERROR");
+                    	map.put(formatter.format(new Date()), "Server Sent ERROR");
                     } else 
                     {
                         timer.cancel();

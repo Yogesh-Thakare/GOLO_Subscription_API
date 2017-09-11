@@ -1,22 +1,23 @@
 package com.yogesh.model;
 
-
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Yogesh Thakare
+ */
 public class ThreadSafeDatabase {
 
     private static ThreadSafeDatabase handleTODB = null;
 
     private HashMap<String, ConcurrentHashMap<String,String>> CACHE = new HashMap<>();
 
-    private ThreadSafeDatabase() {
+    private ThreadSafeDatabase() {}
 
-    }
-
-    public static ThreadSafeDatabase getHandle() {
-        if(handleTODB == null) {
+    public static ThreadSafeDatabase getHandle()
+    {
+        if(handleTODB == null) 
+        {
             handleTODB = new ThreadSafeDatabase();
         }
 

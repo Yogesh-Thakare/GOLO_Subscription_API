@@ -6,6 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,11 +49,6 @@ public class ServerMonitorControllerTest
 
 	@MockBean
 	StatisticsService statisticsService;
-	
-	@MockBean
-	ServerStatisticsSetDTO statisticsSet;
-	@MockBean
-	ServerStatisticsDTO statsDTO;
 		
 	@Before
 	public void setup() {
@@ -78,11 +77,12 @@ public class ServerMonitorControllerTest
 	@Test
 	public void testMonitoringStartForServer() throws Exception {
 
-		when(monitorService.startMonitoring(anyString(), anyLong())).thenReturn("monitoring started on https://api.test.paysafe.com/accountmanagement/monitor");
+		when(monitorService.startMonitoring(anyString(), anyLong()))
+				.thenReturn("monitoring started on https://api.test.paysafe.com/accountmanagement/monitor");
 
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/monitor/start")
-        		.header("hostname", "localhost:8090")
-                .accept(MediaType.APPLICATION_JSON).param("hostname", "https://api.test.paysafe.com/accountmanagement/monitor").param("interval", "500");
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/monitor/start")
+				.header("hostname", "localhost:8090").accept(MediaType.APPLICATION_JSON)
+				.param("hostname", "https://api.test.paysafe.com/accountmanagement/monitor").param("interval", "500");
         ResultActions result = mockMvc.perform(requestBuilder);
         
         Assert.notNull(result);
@@ -94,15 +94,33 @@ public class ServerMonitorControllerTest
 	public void testMonitoringStopForServer() throws Exception 
 	{
 
-		when(monitorService.startMonitoring(anyString(), anyLong())).thenReturn("monitoring stopped on https://api.test.paysafe.com/accountmanagement/monitor");
+		when(monitorService.startMonitoring(anyString(), anyLong()))
+				.thenReturn("monitoring stopped on https://api.test.paysafe.com/accountmanagement/monitor");
 
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/monitor/stop")
-        		.header("hostname", "localhost:8090")
-                .accept(MediaType.APPLICATION_JSON).param("hostname", "https://api.test.paysafe.com/accountmanagement/monitor");
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/monitor/stop")
+				.header("hostname", "localhost:8090").accept(MediaType.APPLICATION_JSON)
+				.param("hostname", "https://api.test.paysafe.com/accountmanagement/monitor");
         ResultActions result = mockMvc.perform(requestBuilder);
         
         Assert.notNull(result);
         verify(monitorService, times(1)).stopMonitoring("https://api.test.paysafe.com/accountmanagement/monitor");
+		
+	}
+	
+	@Test
+	public void testGetOverviewFromServer() throws Exception 
+	{
+		List<ServerStatisticsDTO> overview= new ArrayList<ServerStatisticsDTO>();
+		
+		when(statisticsService.getOverview(anyString())).thenReturn(overview);
+		
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/monitor/overview")
+				.header("hostname", "localhost:8090").accept(MediaType.APPLICATION_JSON)
+				.param("hostname", "https://api.test.paysafe.com/accountmanagement/monitor");
+		ResultActions result = mockMvc.perform(requestBuilder);
+        
+        Assert.notNull(result);
+        verify(statisticsService, times(1)).getOverview("https://api.test.paysafe.com/accountmanagement/monitor");
 		
 	}
 

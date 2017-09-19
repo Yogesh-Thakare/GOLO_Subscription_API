@@ -1,4 +1,4 @@
-			* Paysafe Coding Challenge - Yogesh Thakare *
+			* Coding Challenge - Yogesh Thakare *
 
 This is Spring Boot based application
 Application can be deployed and viewed on Local: (http://localhost:8090/)
